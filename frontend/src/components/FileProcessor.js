@@ -2,6 +2,9 @@ import React, { useState } from "react";
 // import DataTableFilter from "./DataTableFilter";
 import DataTableEliminated from "./DataTableEliminated";
 
+const BACKEND_URL = process.env.REACT_APP_API_URL;
+console.log(BACKEND_URL);
+
 const FileProcessor = () => {
   const [results, setResults] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -10,15 +13,13 @@ const FileProcessor = () => {
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     setIsProcessing(true);
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-
       setCheckStatus(false);
-      const response = await fetch("http://localhost:3001/api/process-excel", {
+      const response = await fetch(`${BACKEND_URL}/api/process-excel`, {
         method: "POST",
         body: formData,
       });
@@ -34,7 +35,7 @@ const FileProcessor = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/download-excel", {
+      const response = await fetch(`${BACKEND_URL}/api/download-excel`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
